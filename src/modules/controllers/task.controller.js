@@ -1,6 +1,6 @@
 const Task = require('../../models/task/task');
 
-getAllTasks = async (req, res, next) => {
+getAllTasks = (req, res, next) => {
   try { 
     Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(result => {
       res.send({ data: result });
@@ -11,7 +11,7 @@ getAllTasks = async (req, res, next) => {
   }
 };
 
-createNewTask = async (req, res, next) => {
+createNewTask = (req, res, next) => {
   const task = new Task(req.body);
   try { 
     task.save().then(result => {
@@ -25,28 +25,33 @@ createNewTask = async (req, res, next) => {
   }
 };
 
-changeTaskInfo = async (req, res, next) => {
+changeTaskInfo = (req, res, next) => {
   try {
-    if (req.body.text) {
-      await Task.updateOne({ _id: req.body._id }, req.body).then(result => {
-        Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
-          res.send(allTasks);
-        });
+    Task.updateOne({ _id: req.body._id }, req.body).then(result => {
+      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
+        res.send(allTasks);
       });
-    } else {
-      await Task.updateOne({ _id: req.body._id, isCheck: !req.body.isCheck }, req.body).then(result => {
-        Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
-          res.send(allTasks);
-        });
-      });
-    }
+    });
   }
   catch {
     res.status(400).send("cant change task");
   }
 };
 
-deleteTask = async (req, res, next) => {
+changeCheckBoxCheck = (req, res, next) => {
+  try {
+    Task.updateOne({ _id: req.body._id, isCheck: !req.body.isCheck }, req.body).then(result => {
+      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
+        res.send(allTasks);
+      });
+    });
+  }
+  catch {
+    res.status(400).send("cant change checkbox");
+  }
+}
+
+deleteTask = (req, res, next) => {
   try {
     Task.deleteOne({ _id: req.body._id }).then(result => {
       Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
