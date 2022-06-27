@@ -12,17 +12,14 @@ app.use(express.json());
 app.use("/", apiRoutes);
 const URL = process.env.URL;
 
-const launch = () => {
-  try {
-    mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
-    app.listen(8000, () => {
-      console.log('Example app listenning on port 8000!');
-    });
-  }
-  catch(error) {
-    console.error('error');
-    process.exit(1);
-  }
-}
 
-launch();
+try {
+  mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
+  app.listen(8000, () => {
+    console.log('Example app listenning on port 8000!');
+  });
+}
+catch(error) {
+  console.error(error);
+  process.exit(1);
+}

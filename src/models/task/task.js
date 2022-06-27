@@ -8,4 +8,4 @@ const taskSchema = new Schema({
   creationTime: Date
 });
 
-module.exports = Task = mongoose.model('tasks', taskSchema);
+module.exports = Task = mongoose.model('Tasks', taskSchema);

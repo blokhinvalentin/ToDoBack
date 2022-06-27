@@ -1,32 +1,67 @@
-const Task = require('../../db/models/task/index');
+const Task = require('../../models/task/task');
 
-module.exports.getAllTasks = (req, res, next) => {
-  Task.find().sort({ creationTime: -1 }).then(result => {
-    res.send({ data: result });
-  }).catch(err => console.error(err));
-};
-
-module.exports.createNewTask = (req, res, next) => {
-  const task = new Task(req.body);
-  task.save().then(result => {
-    Task.find().sort({ creationTime: -1 }).then(result2 => {
-      res.send(result2);
-    }).catch(err => console.error(err));
-  });
-};
-
-module.exports.changeTaskInfo = (req, res, next) => {
-  Task.updateOne({ _id: req.body._id }, req.body).then(result1 => {
+getAllTasks = async (req, res, next) => {
+  try { 
     Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(result => {
-      res.send(result);
-    });
-  }).catch(err => console.error(err));
+      res.send({ data: result });
+    })
+  }
+  catch {
+    res.status(400).send("cant get all tasks");
+  }
 };
 
-module.exports.deleteTask = (req, res, next) => {
-  Task.deleteOne({ _id: req.body._id }).then(result => {
-    Task.find().sort({ creationTime: -1 }).then(result2 => {
-      res.send(result2);
-    });
-  }).catch(err => console.error(err));
+createNewTask = async (req, res, next) => {
+  const task = new Task(req.body);
+  try { 
+    task.save().then(result => {
+      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
+        res.send(allTasks);
+      })
+    })
+  }
+  catch {
+    res.status(400).send("cant create task");
+  }
 };
+
+changeTaskInfo = async (req, res, next) => {
+  try {
+    if (req.body.text) {
+      await Task.updateOne({ _id: req.body._id }, req.body).then(result => {
+        Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
+          res.send(allTasks);
+        });
+      });
+    } else {
+      await Task.updateOne({ _id: req.body._id, isCheck: !req.body.isCheck }, req.body).then(result => {
+        Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
+          res.send(allTasks);
+        });
+      });
+    }
+  }
+  catch {
+    res.status(400).send("cant change task");
+  }
+};
+
+deleteTask = async (req, res, next) => {
+  try {
+    Task.deleteOne({ _id: req.body._id }).then(result => {
+      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
+        res.send(allTasks);
+      });
+    })
+  }
+  catch {
+    res.status(400).send("cant delete task");
+  }
+};
+
+module.exports = {
+  getAllTasks,
+  createNewTask,
+  changeTaskInfo,
+  deleteTask
+}
