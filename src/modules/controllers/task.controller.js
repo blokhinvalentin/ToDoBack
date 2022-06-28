@@ -29,8 +29,7 @@ createNewTask = (req, res) => {
 changeCheckBoxCheck = (req, res) => {
   try {
     let [_id, isCheck] = [req.body._id, !req.body.isCheck];
-    Task.updateOne({ _id, isCheck }, req.body).then(() => {
-      console.log(isCheck);
+    Task.updateOne({ _id, isCheck }, { isCheck: !isCheck }).then(() => {
       Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
         res.send(allTasks);
       })
@@ -44,8 +43,7 @@ changeCheckBoxCheck = (req, res) => {
 changeTaskTextInfo = (req, res) => {
   try {
     let [_id, text] = [req.body._id, req.body.text];
-    console.log(text);
-    Task.updateOne({ _id, text }, req.body).then(() => {
+    Task.updateOne({ _id }, { text }).then(() => {
       Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
         res.send(allTasks);
       })
