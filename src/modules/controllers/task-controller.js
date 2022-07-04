@@ -42,7 +42,10 @@ const changeCheckBoxCheck = (req, res) => {
 const changeTaskTextInfo = (req, res) => {
   try {
     const { _id, text } = req.body;
-    Task.updateOne({ _id }, { text }).then(() => {
+    Task.updateOne(
+      { _id },
+      { $set: { _id, text } },
+    ).then(() => {
       getAllTasks(req, res);
     });
   }

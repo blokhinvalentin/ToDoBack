@@ -7,7 +7,7 @@ const {
   changeCheckBoxCheck,
   changeTaskTextInfo,
   deleteTask
-} = require('../controllers/task.controller');
+} = require('../controllers/task-controller');
 
 router.get('/allTasks', getAllTasks);
 router.post('/createTask', createNewTask);
