@@ -16,7 +16,7 @@ const createNewTask = (req, res) => {
   if (isCheck) {
     throw new Error("cant add checked task");
   }
-  const task = new Task(req.body);
+  const task = new Task(text, isCheck);
   try { 
     task.save().then(() => {
       getAllTasks(req, res);
