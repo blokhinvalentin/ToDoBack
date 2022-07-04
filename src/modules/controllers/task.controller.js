@@ -1,68 +1,64 @@
-const Task = require('../../models/task/task');
+const Task = require('../../models/task');
 
-getAllTasks = (req, res) => {
+const getAllTasks = (req, res) => {
   try { 
     Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(result => {
-      res.send({ data: result });
+      res.status(200).send(result);
     })
   }
-  catch {
+  catch(error) {
     res.status(400).send("cant get all tasks");
   }
 };
 
-createNewTask = (req, res) => {
-  req.body.isCheck = false;
+const createNewTask = (req, res) => {
+  const { text, isCheck } = req.body;
+  if (isCheck) {
+    throw new Error("cant add checked task");
+  }
   const task = new Task(req.body);
   try { 
     task.save().then(() => {
-      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
-        res.send(allTasks);
-      })
+      getAllTasks(req, res);
     });
   }
-  catch {
+  catch(error) {
     res.status(400).send("cant create task");
   }
 };
 
-changeCheckBoxCheck = (req, res) => {
+const changeCheckBoxCheck = (req, res) => {
   try {
-    let [_id, isCheck] = [req.body._id, !req.body.isCheck];
-    Task.updateOne({ _id, isCheck }, { isCheck: !isCheck }).then(() => {
-      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
-        res.send(allTasks);
-      })
+    const { _id, isCheck } = req.body;
+    Task.updateOne({ _id }, { isCheck: isCheck }).then(() => {
+      getAllTasks(req, res);
     });
   }
-  catch {
+  catch(error) {
     res.status(400).send("cant change checkbox");
   }
 }
 
-changeTaskTextInfo = (req, res) => {
+const changeTaskTextInfo = (req, res) => {
   try {
-    let [_id, text] = [req.body._id, req.body.text];
+    const { _id, text } = req.body;
     Task.updateOne({ _id }, { text }).then(() => {
-      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
-        res.send(allTasks);
-      })
+      getAllTasks(req, res);
     });
   }
-  catch {
+  catch(error) {
     res.status(400).send("cant change task");
   }
 };
 
-deleteTask = (req, res) => {
+const deleteTask = (req, res) => {
   try {
-    Task.deleteOne({ _id: req.body._id }).then(() => {
-      Task.find().sort({ isCheck: 1 }).sort({ creationTime: -1 }).then(allTasks => {
-        res.send(allTasks);
-      })
+    const _id = req.body._id;
+    Task.deleteOne({ _id }).then((result) => {
+      res.status(200).send(result);
     });
   }
-  catch {
+  catch(error) {
     res.status(400).send("cant delete task");
   }
 };
