@@ -65,7 +65,7 @@ const deleteTask = (req, res) => {
   try {
     const _id = req.body._id;
 
-    if (!_id) {
+    if (!req.body.hasOwnProperty('_id')) {
       throw new Error('id is unreachable to read');
     }
 
