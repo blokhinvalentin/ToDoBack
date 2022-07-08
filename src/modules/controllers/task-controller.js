@@ -13,6 +13,11 @@ const getAllTasks = (req, res) => {
 
 const createNewTask = (req, res) => {
   const { text, creationTime } = req.body;
+
+  if (text === '') {
+    throw new Error('text is empty');
+  }
+
   const task = new Task({ text, isCheck: false, creationTime });
   try { 
     task.save().then(() => {
@@ -32,7 +37,7 @@ const changeCheckBoxCheck = (req, res) => {
       throw new Error('id or checkbox are unreachable to read');
     }
 
-    Task.updateOne({ _id }, { isCheck: isCheck }).then(() => {
+    Task.updateOne({ _id }, { $set: { _id, isCheck: isCheck } }).then(() => {
       getAllTasks(req, res);
     });
   }
@@ -45,7 +50,7 @@ const changeTaskTextInfo = (req, res) => {
   try {
     const { _id, text } = req.body;
 
-    if (!req.body.hasOwnProperty('_id')|| typeof text === '') {
+    if (!req.body.hasOwnProperty('_id')|| text === '') {
       throw new Error('id or text are unreachable to read');
     }
 
@@ -63,12 +68,12 @@ const changeTaskTextInfo = (req, res) => {
 
 const deleteTask = (req, res) => {
   try {
-    const _id = req.body._id;
-
     if (!req.body.hasOwnProperty('_id')) {
       throw new Error('id is unreachable to read');
     }
 
+    const _id = req.body._id;
+    
     Task.deleteOne({ _id }).then(result => {
       res.status(200).send(result);
     });
