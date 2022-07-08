@@ -37,9 +37,10 @@ const changeCheckBoxCheck = (req, res) => {
       throw new Error('id or checkbox are unreachable to read');
     }
 
-    Task.updateOne({ _id }, 
-      { $set: { _id, isCheck: isCheck } })
-      .then(() => {
+    Task.updateOne(
+      { _id }, 
+      { $set: { _id, isCheck: isCheck } }
+    ).then(() => {
       getAllTasks(req, res);
     });
   }
@@ -58,8 +59,8 @@ const changeTaskTextInfo = (req, res) => {
 
     Task.updateOne(
       { _id },
-      { $set: { _id, text } })
-      .then(() => {
+      { $set: { _id, text } }
+    ).then(() => {
       getAllTasks(req, res);
     });
   }
