@@ -11,8 +11,8 @@ const {
 
 router.get('/allTasks', getAllTasks);
 router.post('/createTask', createNewTask);
-router.patch('/updateCheckbox', changeCheckBoxCheck);
-router.patch('/updateText', changeTaskTextInfo);
+router.patch('/updateCheckbox/:_id', changeCheckBoxCheck);
+router.patch('/updateText/:_id', changeTaskTextInfo);
 router.delete('/deleteTask', deleteTask);
 
 module.exports = router;
