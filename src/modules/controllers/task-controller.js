@@ -21,7 +21,7 @@ const createNewTask = (req, res) => {
   const task = new Task({ text, isCheck: false, creationTime: Date.now() });
   try { 
     task.save().then(() => {
-      getAllTasks(req, res);
+      res.status(400).send(task);
     });
   }
   catch (error) {
