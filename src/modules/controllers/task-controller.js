@@ -6,7 +6,7 @@ const getAllTasks = (req, res) => {
       res.status(200).send(result);
     })
   }
-  catch(error) {
+  catch (error) {
     res.status(400).send("cant get all tasks");
   }
 };
@@ -24,16 +24,17 @@ const createNewTask = (req, res) => {
       getAllTasks(req, res);
     });
   }
-  catch(error) {
+  catch (error) {
     res.status(400).send("cant create task");
   }
 };
 
 const changeCheckBoxCheck = (req, res) => {
   try {
-    const [_id, isCheck] = [req.params['_id'], req.body.isCheck];
+    const params = req.params;
+    const [_id, isCheck] = [params._id, req.body.isCheck];
 
-    if ((!req.body.hasOwnProperty('_id')) || (_id === '') || (typeof isCheck !== 'boolean')) {
+    if ((!params.hasOwnProperty('_id')) || (_id === '') || (typeof isCheck !== 'boolean')) {
       throw new Error('id or checkbox are unreachable to read');
     }
 
@@ -44,16 +45,17 @@ const changeCheckBoxCheck = (req, res) => {
       getAllTasks(req, res);
     });
   }
-  catch(error) {
+  catch (error) {
     res.status(400).send("cant change checkbox");
   }
 }
 
 const changeTaskTextInfo = (req, res) => {
   try {
-    const [_id, text] = [req.params['_id'], req.body.text];
+    const params = req.params;
+    const [_id, text] = [params._id, req.body.text];
 
-    if ((!req.body.hasOwnProperty('_id')) || (_id === '') || (text === '')) {
+    if ((!params.hasOwnProperty('_id')) || (_id === '') || (text === '')) {
       throw new Error('id or text are unreachable to read');
     }
 
@@ -61,31 +63,28 @@ const changeTaskTextInfo = (req, res) => {
       { _id },
       { $set: { _id, text } }
     ).then(() => {
-      getAllTasks(req, res);
+      res.status(200).send(text);
     });
   }
-  catch(error) {
+  catch (error) {
     res.status(400).send("cant change task");
   }
 };
 
 const deleteTask = (req, res) => {
   try {
-    if (!req.body.hasOwnProperty('_id')) {
+    const params = req.params;
+    if (!params.hasOwnProperty('_id') || params._id === '') {
       throw new Error('id is unreachable to read');
     }
 
-    const _id = req.body._id;
+    const _id = params._id;
 
-    if (_id === '') {
-      throw new Error('id is unreachable to read');
-    }
-    
     Task.deleteOne({ _id }).then(result => {
       res.status(200).send(result);
     });
   }
-  catch(error) {
+  catch (error) {
     res.status(400).send("cant delete task");
   }
 };

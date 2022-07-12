@@ -13,6 +13,6 @@ router.get('/allTasks', getAllTasks);
 router.post('/createTask', createNewTask);
 router.patch('/updateCheckbox/:_id', changeCheckBoxCheck);
 router.patch('/updateText/:_id', changeTaskTextInfo);
-router.delete('/deleteTask', deleteTask);
+router.delete('/deleteTask/:_id', deleteTask);
 
 module.exports = router;
