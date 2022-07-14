@@ -20,7 +20,6 @@ const createNewTask = (req, res) => {
   const task = new Task({ text, isCheck: false });
   try { 
     task.save().then(() => {
-      console.log(task);
       res.status(200).send(task);
     });
   } catch (error) {
