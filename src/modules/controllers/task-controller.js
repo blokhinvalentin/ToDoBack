@@ -32,7 +32,9 @@ const createNewTask = (req, res) => {
 const changeCheckBoxCheck = (req, res) => {
   try {
     const params = req.params;
-    const { _id, isCheck } = { _id :params._id, isCheck: req.body.isCheck };
+
+    const _id = params._id;
+    const isCheck = req.body.isCheck;
 
     if ((!params.hasOwnProperty('_id'))
       || (_id === '')
@@ -56,7 +58,9 @@ const changeCheckBoxCheck = (req, res) => {
 const changeTaskTextInfo = (req, res) => {
   try {
     const params = req.params;
-    const { _id, text } = { _id: params._id, text: req.body.text };
+
+    const _id = params._id;
+    const text = req.body.text;
 
     if ((!params.hasOwnProperty('_id'))
       || (_id === '') 
