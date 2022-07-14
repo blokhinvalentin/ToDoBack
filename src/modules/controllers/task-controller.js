@@ -11,6 +11,8 @@ const getAllTasks = (req, res) => {
 };
 
 const createNewTask = (req, res) => {
+  
+  try { 
   const { text } = req.body;
   
   if (text === '') {
@@ -18,7 +20,7 @@ const createNewTask = (req, res) => {
   }
   
   const task = new Task({ text, isCheck: false });
-  try { 
+
     task.save().then(() => {
       res.status(200).send(task);
     });
@@ -30,7 +32,7 @@ const createNewTask = (req, res) => {
 const changeCheckBoxCheck = (req, res) => {
   try {
     const params = req.params;
-    const [_id, isCheck] = [params._id, req.body.isCheck];
+    const { _id, isCheck } = { _id :params._id, isCheck: req.body.isCheck };
 
     if ((!params.hasOwnProperty('_id'))
       || (_id === '')
@@ -54,7 +56,7 @@ const changeCheckBoxCheck = (req, res) => {
 const changeTaskTextInfo = (req, res) => {
   try {
     const params = req.params;
-    const [_id, text] = [params._id, req.body.text];
+    const { _id, text } = { _id: params._id, text: req.body.text };
 
     if ((!params.hasOwnProperty('_id'))
       || (_id === '') 
