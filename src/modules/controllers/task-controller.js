@@ -17,9 +17,10 @@ const createNewTask = (req, res) => {
     throw new Error('text is empty');
   }
   
-  const task = new Task({ text, isCheck: false, creationTime: Date.now() });
+  const task = new Task({ text, isCheck: false });
   try { 
     task.save().then(() => {
+      console.log(task);
       res.status(200).send(task);
     });
   } catch (error) {
@@ -33,8 +34,8 @@ const changeCheckBoxCheck = (req, res) => {
     const [_id, isCheck] = [params._id, req.body.isCheck];
 
     if ((!params.hasOwnProperty('_id'))
-    || (_id === '')
-    || (typeof isCheck !== 'boolean')
+      || (_id === '')
+      || (typeof isCheck !== 'boolean')
     ) {
       throw new Error('id or checkbox are unreachable to read');
     }
@@ -57,8 +58,8 @@ const changeTaskTextInfo = (req, res) => {
     const [_id, text] = [params._id, req.body.text];
 
     if ((!params.hasOwnProperty('_id'))
-    || (_id === '') 
-    || (text === '')
+      || (_id === '') 
+      || (text === '')
     ) {
       throw new Error('id or text are unreachable to read');
     }
