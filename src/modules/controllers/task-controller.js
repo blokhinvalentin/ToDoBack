@@ -11,16 +11,13 @@ const getAllTasks = (req, res) => {
 };
 
 const createNewTask = (req, res) => {
-  
   try { 
-  const { text } = req.body;
-  
-  if (text === '') {
-    throw new Error('text is empty');
-  }
-  
-  const task = new Task({ text, isCheck: false });
-
+    const { text } = req.body;
+    if (text === '') {
+      throw new Error('text is empty');
+    }
+    
+    const task = new Task({ text, isCheck: false });
     task.save().then(() => {
       res.status(200).send(task);
     });
@@ -32,7 +29,6 @@ const createNewTask = (req, res) => {
 const changeCheckBoxCheck = (req, res) => {
   try {
     const params = req.params;
-
     const _id = params._id;
     const isCheck = req.body.isCheck;
 
@@ -58,7 +54,6 @@ const changeCheckBoxCheck = (req, res) => {
 const changeTaskTextInfo = (req, res) => {
   try {
     const params = req.params;
-
     const _id = params._id;
     const text = req.body.text;
 

@@ -17,8 +17,7 @@ const launch = () => {
     app.listen(8000, () => {
       console.log('Example app listenning on port 8000!');
     });
-  }
-  catch(error) {
+  } catch (error) {
     console.error(error);
     process.exit(1);
   }
