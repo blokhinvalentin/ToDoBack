@@ -9,10 +9,10 @@ const {
   deleteTask
 } = require('../controllers/task-controller');
 
-router.get('/allTasks', getAllTasks);
-router.post('/createTask', createNewTask);
-router.patch('/updateCheckbox/:_id', changeCheckBoxCheck);
-router.patch('/updateText/:_id', changeTaskTextInfo);
-router.delete('/deleteTask/:_id', deleteTask);
+router.get('/tasks', getAllTasks);
+router.post('/tasks', createNewTask);
+router.patch('/tasks/:_id/checkbox', changeCheckBoxCheck);
+router.patch('/tasks/:_id/text', changeTaskTextInfo);
+router.delete('/tasks/:_id', deleteTask);
 
 module.exports = router;
